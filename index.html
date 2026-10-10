@@ -7,6 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#2563EB"/>
+<link rel="apple-touch-icon" href="icon.svg"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -119,6 +122,7 @@
   <div class="tab-row">
     <button class="tab-btn active" id="tab-expense" onclick="switchMoneyTab('expense')">Expenses</button>
     <button class="tab-btn" id="tab-income" onclick="switchMoneyTab('income')">Income</button>
+    <button class="tab-btn" id="tab-transfer" onclick="switchMoneyTab('transfer')">Transfer</button>
   </div>
 
   <div class="summary-strip four">
@@ -684,6 +688,50 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+
+<!-- ══════════════ MODAL: ADD TRANSFER ══════════════ -->
+<div id="transfer-modal" class="modal-bg" onclick="closeTransferModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeTransferModal()">✕</button>
+    <div class="modal-title" id="transfer-modal-title">Add Transfer</div>
+    <div class="form-grid">
+      <div class="form-grid two">
+        <div class="field"><label>Amount (₹) *</label><input id="tr-amt" type="number" min="0.01" step="0.01" placeholder="0"/></div>
+        <div class="field"><label>Date *</label><input id="tr-date" type="date"/></div>
+      </div>
+      <div class="field"><label>From Account *</label>
+        <select id="tr-from">
+          <option>Savings Account</option><option>Current Account</option><option>Credit Card</option><option>UPI/Wallet</option><option>Cash</option>
+        </select>
+      </div>
+      <div class="field"><label>To Account *</label>
+        <select id="tr-to">
+          <option>Savings Account</option><option>Current Account</option><option>Credit Card</option><option>UPI/Wallet</option><option>Cash</option>
+        </select>
+      </div>
+      <div class="field"><label>Note (optional)</label><input id="tr-note" type="text" placeholder="Optional note…"/></div>
+    </div>
+    <button class="btn btn-success btn-full" style="margin-top:16px;" id="transfer-save-btn" onclick="saveTransfer()">Save Transfer</button>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/store.js"></script>
+<script src="js/p2p.js"></script>
+<script src="js/theme_nav.js"></script>
+<script src="js/profile_banks.js"></script>
+<script src="js/transactions.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/goals_loans.js"></script>
+<script src="js/reminders.js"></script>
+<script src="js/import.js"></script>
+<script src="js/auth_init.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => console.error('SW registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>
